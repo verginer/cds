@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
+.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 git-config
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -73,6 +73,29 @@ endif
 ## Test python environment is setup correctly
 test_environment:
 	$(PYTHON_INTERPRETER) test_environment.py
+
+
+#################################################################################
+# GitHub setup                                                                  #
+# http://blog.byronjsmith.com/makefile-shortcuts.html                           #
+#################################################################################
+
+.git :
+	git init
+
+## set up the git environment with all necessary configs
+git-config : | .git
+	chmod +x drop_jupyter_output.sh
+	git config --local filter.dropoutput_jupyter.clean \
+		bin/drop_jupyter_output.sh
+	git config --local filter.dropoutput_jupyter.smudge cat
+	git config --local \
+		diff.daff-csv.command "daff.py diff --git"
+	git config --local \
+		merge.daff-csv.name "daff.py tabular merge"
+	git config --local \
+		merge.daff-csv.driver "daff.py merge --output %A %O %A %B"
+
 
 #################################################################################
 # PROJECT RULES                                                                 #
