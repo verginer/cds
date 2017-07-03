@@ -85,10 +85,6 @@ test_environment:
 
 ## set up the git environment with all necessary configs
 git-config : | .git
-	chmod +x drop_jupyter_output.sh
-	git config --local filter.dropoutput_jupyter.clean \
-		bin/drop_jupyter_output.sh
-	git config --local filter.dropoutput_jupyter.smudge cat
 	git config --local \
 		diff.daff-csv.command "daff.py diff --git"
 	git config --local \
