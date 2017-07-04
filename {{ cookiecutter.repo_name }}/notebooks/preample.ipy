@@ -1,0 +1,29 @@
+# add the 'src' directory as one where we can import modules
+import sys
+import os
+src_dir = os.path.join(os.getcwd(), os.pardir, 'src')
+sys.path.append(src_dir)
+sys.path.insert(0, os.path.abspath(src_dir))
+
+# Load the "autoreload" extension
+%load_ext autoreload
+
+# always reload modules marked with "%aimport"
+%autoreload 1
+
+# import my method from the source code
+%aimport features
+%aimport models
+%aimport data
+
+import numpy as np
+import pandas as pd
+
+# MatPlotLib
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
+%matplotlib inline
+
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())

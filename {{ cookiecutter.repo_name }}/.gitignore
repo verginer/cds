@@ -73,5 +73,9 @@ target/
 /data/
 
 
+# Snakemake
+.snakemake/
+
+
 # PyCharm
 .idea/

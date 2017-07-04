@@ -1,0 +1,6 @@
+DIRS:
+    PROCESSED: 'data/processed'
+    INTERIM: 'data/interim'
+    EXTERNAL: 'data/external'
+    RAW: 'data/raw'
+

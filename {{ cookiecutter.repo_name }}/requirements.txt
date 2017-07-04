@@ -20,3 +20,4 @@ numpy
 numexpr
 matplotlib
 tqdm>=4.10.0
+munch
