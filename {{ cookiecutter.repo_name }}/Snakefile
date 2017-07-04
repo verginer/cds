@@ -1,0 +1,23 @@
+configfile: "config/snakeconfig.yaml"
+
+#=========================================================================
+# https://snakemake.readthedocs.io/en/stable/getting_started/examples.html
+#=========================================================================
+#
+#rule RULENAME:
+#    input:
+#        'data/raw/test.csv',
+#        lambda wildcards: config["samples"][wildcards.sample]
+#    output:
+#        temp('mapped_reads/{sample}.bam')
+#    params:
+#        rg = "@RG\tID:{sample}\tSM:{sample}"
+#    log:
+#        "logs/bwa_mem/{sample}.log"
+#    threads: 3
+#    benchmark:
+#        "benchmarks/{sample}.bwa.benchmark.txt"
+#    shell: # or script or run
+#        "bwa mem -R '{params.rg}' "
+#        "-t {threads} {input} | samtools view -Sb - > {output} "
+#        "2> {log}"
