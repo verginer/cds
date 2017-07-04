@@ -11,9 +11,7 @@ setuptools.setup(
     description="{{ cookiecutter.description }}",
     # long_description=open('README.rst').read(),
 
-    packages=setuptools.find_packages('src'),
-    package_dir={"": "src"},
-
+    packages=setuptools.find_packages(include=['src']),
     install_requires=[],
 
     classifiers=[
