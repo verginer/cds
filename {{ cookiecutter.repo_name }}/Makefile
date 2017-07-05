@@ -1,4 +1,4 @@
-.PHONY: clean env install_src test lint requirements sync_data_to_s3 sync_data_from_s3 git-config
+.PHONY: clean 	install_src test lint requirements sync_data_to_s3 sync_data_from_s3 git-config
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -12,6 +12,7 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 
 ifeq (,$(shell which conda))
 HAS_CONDA=False
+CONDA_PATH=$(shell which conda)
 else
 HAS_CONDA=True
 endif
@@ -49,22 +50,22 @@ endif
 create_environment:
 ifeq (True,$(HAS_CONDA))
 	@echo ">>> Detected conda, creating conda environment."
-	conda env create -n $(PROJECT_NAME) python=3 -f environment.yaml
-	source activate $(PROJECT_NAME)
-	pip install -e .
+	conda create -n $(PROJECT_NAME) python=3 --file environment.yml
 	@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)\n or make env"
 else
 	@echo ">>> No conda env detected, please launch and retry."
 endif
 
-## activate the environment
-env:
-	source activate $(PROJECT_NAME)
 
 ## install the src library into pip
-install_src: env create_environment
+install_src: create_environment
+ifneq (,$(findstring $(PROJECT_NAME),$(CONDA_PATH)))
 	pip install -e .
 	@">>> Installed src into the $(PROJECT_NAME) env can now be loaded with `src.data`
+else
+	@">>> $(PROJECT_NAME) is not activated please activate
+endif
+
 
 
 test: create_environment
