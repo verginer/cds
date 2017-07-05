@@ -10,14 +10,13 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='w')
 
 
-
 def get_logger(path: str) -> logging.Logger:
     """
-    returns a logger with a propper name
-    
+    returns a logger with a proper name
+
     Parameters
     ----------
-    
+
     path : str
         give the name of the file that invokes it
 
@@ -26,7 +25,7 @@ def get_logger(path: str) -> logging.Logger:
 
     >>> get_logger(__file__)
     <Logger rule.utils.py (DEBUG)>
-    
+
     """
     long_name = os.path.basename(path)
     base = '.'.join(long_name.split('.')[-2:])
