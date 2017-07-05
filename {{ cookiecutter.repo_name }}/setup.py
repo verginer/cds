@@ -16,8 +16,6 @@ setuptools.setup(
     version="0.0.1",
 
     author="{{ cookiecutter.author_name }}",
-    author_email="{{ cookiecutter.email }}",
-
     description="{{ cookiecutter.description }}",
 
     packages=setuptools.find_packages(include=['src']),

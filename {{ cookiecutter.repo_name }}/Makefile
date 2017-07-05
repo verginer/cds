@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 git-config
+.PHONY: clean env install_src test lint requirements sync_data_to_s3 sync_data_from_s3 git-config
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -8,7 +8,7 @@ PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
 PROJECT_NAME = {{ cookiecutter.repo_name }}
-PYTHON_INTERPRETER = {{ cookiecutter.python_interpreter }}
+
 
 ifeq (,$(shell which conda))
 HAS_CONDA=False
@@ -19,14 +19,6 @@ endif
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
-
-## Install Python Dependencies
-requirements: test_environment
-	pip install -r requirements.txt
-
-## Make Dataset
-data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py
 
 ## Delete all compiled Python files
 clean:
@@ -52,28 +44,31 @@ else
 	aws s3 sync s3://$(BUCKET)/data/ data/ --profile $(PROFILE)
 endif
 
+
 ## Set up python interpreter environment
 create_environment:
 ifeq (True,$(HAS_CONDA))
-		@echo ">>> Detected conda, creating conda environment."
-ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(PROJECT_NAME) python=3
+	@echo ">>> Detected conda, creating conda environment."
+	conda env create -n $(PROJECT_NAME) python=3 -f environment.yaml
+	source activate $(PROJECT_NAME)
+	pip install -e .
+	@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)\n or make env"
 else
-	conda create --name $(PROJECT_NAME) python=2.7
-endif
-		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
-else
-	@pip install -q virtualenv virtualenvwrapper
-	@echo ">>> Installing virtualenvwrapper if not already intalled.\nMake sure the following lines are in shell startup file\n\
-	export WORKON_HOME=$$HOME/.virtualenvs\nexport PROJECT_HOME=$$HOME/Devel\nsource /usr/local/bin/virtualenvwrapper.sh\n"
-	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)"
-	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
+	@echo ">>> No conda env detected, please launch and retry."
 endif
 
-## Test python environment is setup correctly
-test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
+## activate the environment
+env:
+	source activate $(PROJECT_NAME)
 
+## install the src library into pip
+install_src: env create_environment
+	pip install -e .
+	@">>> Installed src into the $(PROJECT_NAME) env can now be loaded with `src.data`
+
+
+test: create_environment
+	pytest
 
 #################################################################################
 # GitHub setup                                                                  #
