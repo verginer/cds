@@ -50,7 +50,7 @@ endif
 create_environment:
 ifeq (True,$(HAS_CONDA))
 	@echo ">>> Detected conda, creating conda environment."
-	conda create -n $(PROJECT_NAME) python=3 --file environment.yml
+	conda env create -n $(PROJECT_NAME) python=3 --file environment.yml
 	@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)\n or make env"
 else
 	@echo ">>> No conda env detected, please launch and retry."
