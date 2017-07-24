@@ -4,7 +4,9 @@
 {{cookiecutter.description}}
 
 Project Organization
-------------
+--------------------
+
+.. code-block:: none
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
@@ -38,4 +40,4 @@ Project Organization
 
 --------
 
-<p><small>Project based on <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cds project template</a>. Extended by Luca Verginer</p>
+forked from https://drivendata.github.io/cookiecutter-data-science/.

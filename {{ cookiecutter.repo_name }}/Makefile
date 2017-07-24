@@ -27,7 +27,7 @@ clean:
 
 ## Lint using flake8
 lint:
-	flake8 --exclude=lib/,bin/,docs/conf.py .
+	flake8 --exclude='lib/,bin/,docs/conf.py,src/rules/.snakemake.*' .
 
 ## Upload Data to S3
 sync_data_to_s3:
@@ -67,9 +67,13 @@ else
 endif
 
 
-
-test: create_environment
+## run tests
+test:
 	pytest
+
+## create coverage report
+cov:
+	pytest --cov=src --cov-report html --cov-report term --doctest-module
 
 #################################################################################
 # GitHub setup                                                                  #
@@ -93,6 +97,30 @@ git-config : | .git
 # PROJECT RULES                                                                 #
 #################################################################################
 
+## plot the DAG of the current Snakefile to pdf and open
+dag :
+	snakemake --dag | dot -Tpdf > reports/figures/dag.pdf
+	open reports/figures/dag.pdf
+
+
+## plot the rulegraph of the current Snakefile to pdf and open
+rulegraph :
+	snakemake --rulegraph | dot -Tpdf > reports/figures/rulegraph.pdf \
+		&& open reports/figures/rulegraph.pdf
+
+## show the summary and statistics of the current snakemake state
+snakestats :
+	snakemake -S | csvlook -t
+
+
+## generate Sphinx HTML documentation, including API docs
+docs:
+	rm -f docs/src.rst
+	rm -f docs/modules.rst
+	sphinx-apidoc -o docs/ src src/rules
+	$(MAKE) -C docs clean
+	$(MAKE) -C docs html
+	open docs/_build/html/index.html
 
 
 #################################################################################
