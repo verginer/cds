@@ -23,7 +23,8 @@ endif
 
 ## Delete all compiled Python files
 clean:
-	find . -name "*.pyc" -exec rm {} \;
+	find . -type f -name "*.py[co]" -delete
+	find . -type d -name "__pycache__" -delete
 
 ## Lint using flake8
 lint:
