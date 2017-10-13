@@ -4,6 +4,8 @@
 # GLOBALS                                                                       #
 #################################################################################
 
+SHELL := /bin/bash
+
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
@@ -11,10 +13,10 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 
 
 ifeq (,$(shell which conda))
-HAS_CONDA=False
-CONDA_PATH=$(shell which conda)
+	HAS_CONDA=False
+	CONDA_PATH=$(shell which conda)
 else
-HAS_CONDA=True
+	HAS_CONDA=True
 endif
 
 #################################################################################
@@ -70,7 +72,7 @@ endif
 
 ## run tests
 test:
-	pytest
+	pytest --cov=src
 
 ## create coverage report
 cov:
@@ -182,5 +184,4 @@ show-help:
 			printf "%s ", words[i]; \
 		} \
 		printf "\n"; \
-	}' \
-	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
+	}' 
