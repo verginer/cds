@@ -8,25 +8,25 @@ import munch
 config = munch.munchify(config)
 
 
-RAW = config.DIRS.RAW
-INT = config.DIRS.INTERIM
-PRO = config.DIRS.PROCESSED
-
+RAW = config.dirs.raw
+INT = config.dirs.interim
+PRO = config.dirs.processed
+RULES = config.dirs.rules
 
 #=========================================================================
 # https://snakemake.readthedocs.io/en/stable/getting_started/examples.html
 #=========================================================================
 #
 #rule all:
-#    input: protect(INTERIM+'/deals.csv')
+#    input: protect(INT+'/deals.csv')
 #
 #
 #rule report:
 #    input:
 #        RAW+'/recap_raw.csv',
 #        lambda wildcards: config["samples"][wildcards.sample]
-#    output: protect/temp(INTERIM+'/deals.csv')
+#    output: protect(INT+'/deals.csv')
 #    threads: 3
 #    params:
 #        rg = "@RG\tID:{sample}\tSM:{sample}"
-#    script: 'src/rules/clean_recap.py'
+#    script: RULES+'clean_recap.py'
