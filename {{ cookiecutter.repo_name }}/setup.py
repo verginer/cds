@@ -2,13 +2,8 @@
 import setuptools
 
 
-setup_requirements = [
-    'pytest-runner'
-]
-
-test_requirements = [
-    'pytest'
-]
+setup_requirements = ['pytest-runner']
+test_requirements = ['pytest']
 
 
 setuptools.setup(

@@ -1,4 +1,4 @@
-.PHONY: clean 	install_src test lint requirements sync_data_to_s3 sync_data_from_s3 git-config
+.PHONY: clean create_environment install_src test lint requirements sync_data_to_s3 sync_data_from_s3 git-config
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -63,6 +63,7 @@ endif
 ## install the src library into pip
 install_src: create_environment
 ifneq (,$(findstring $(PROJECT_NAME),$(CONDA_PATH)))
+	source activate $(PROJECT_NAME) && \
 	pip install -e .
 	@">>> Installed src into the $(PROJECT_NAME) env can now be loaded with `src.data`
 else
@@ -77,23 +78,6 @@ test:
 ## create coverage report
 cov:
 	pytest --cov=src --cov-report html --cov-report term --doctest-module
-
-#################################################################################
-# GitHub setup                                                                  #
-# http://blog.byronjsmith.com/makefile-shortcuts.html                           #
-#################################################################################
-
-.git :
-	git init
-
-## set up the git environment with all necessary configs
-git-config : | .git
-	git config --local \
-		diff.daff-csv.command "daff.py diff --git"
-	git config --local \
-		merge.daff-csv.name "daff.py tabular merge"
-	git config --local \
-		merge.daff-csv.driver "daff.py merge --output %A %O %A %B"
 
 
 #################################################################################
