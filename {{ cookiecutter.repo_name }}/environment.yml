@@ -2,31 +2,13 @@ name: {{ cookiecutter.repo_name }}
 channels:
 - defaults
 dependencies:
-- jupyter
 - numpy
-- numexpr
 - matplotlib
 - pandas
-- pip
 - python
-- python-dateutil
 - setuptools
+- pip
 - pip:
-  - awscli
-  - flake8
-  - botocore
-  - chardet
-  - click
-  - coverage
-  - daff
-  - graphviz
   - munch
-  - pandoc
-  - pytest
-  - pytest-runner
-  - python-dotenv
-  - pyyaml
-  - requests
   - snakemake
-  - sphinx
   - tqdm

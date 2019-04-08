@@ -76,8 +76,15 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
-/data/
-
+# Keep the .gitkeeps so that the data structure remains intact after cloning
+data/external/*
+!data/external/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 
 # Snakemake
 .snakemake/
